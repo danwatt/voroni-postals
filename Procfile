@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS  -jar target/voroni-postals-1.0-SNAPSHOT.jar $PORT
+web: java $JAVA_OPTS  -jar target/app.jar $PORT
