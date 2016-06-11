@@ -43,6 +43,7 @@ public class PostalSource {
                     .toURI())).map(PostalCode::loadLine).distinct().collect(Collectors.toMap(pc -> pc.postal, pc -> pc));
             computeVoroni();
         } catch (Exception ex) {
+            ex.printStackTrace();
             postalCodes = new HashMap<>();
         }
     }
