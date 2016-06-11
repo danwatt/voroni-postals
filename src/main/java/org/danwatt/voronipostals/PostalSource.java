@@ -9,9 +9,13 @@ import org.jooq.lambda.tuple.Tuple;
 import org.jooq.lambda.tuple.Tuple2;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -24,13 +28,13 @@ public class PostalSource {
 
     private static PostalSource instance;
 
-    public static PostalSource getInstance() {
+    static PostalSource getInstance() {
         if (null == instance) {
             synchronized (geometryFactory) {
                 if (null == instance) {
                     System.out.println("Loading postal codes");
                     instance = new PostalSource();
-                    System.out.println("Loaded " + instance.postalCodes.size() +" postal codes / polgyons");
+                    System.out.println("Loaded " + instance.postalCodes.size() + " postal codes / polgyons");
                 }
             }
         }
@@ -39,8 +43,12 @@ public class PostalSource {
 
     private PostalSource() {
         try {
-            postalCodes = Files.lines(Paths.get(ClassLoader.getSystemResource("US.txt")
-                    .toURI())).map(PostalCode::loadLine).distinct().collect(Collectors.toMap(pc -> pc.postal, pc -> pc));
+            URL res = ClassLoader.getSystemResource("US.txt");
+            System.out.println("Should load from: " + res.toString());
+            String[] parts = res.toString().split("!");
+            FileSystem fs = FileSystems.newFileSystem(URI.create(parts[0]), new HashMap<>());
+            Path path = fs.getPath(parts[1]);
+            postalCodes = Files.lines(path).map(PostalCode::loadLine).distinct().collect(Collectors.toMap(pc -> pc.postal, pc -> pc));
             computeVoroni();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -48,7 +56,7 @@ public class PostalSource {
         }
     }
 
-    public List<PostalCode> getAroundPoint(double lat, double lon) {
+    List<PostalCode> getAroundPoint(double lat, double lon) {
         Point point = geometryFactory.createPoint(new Coordinate(lon, lat));
         Geometry buffer = point.buffer(0.5);
         List<Geometry> results = voroniIndex.query(buffer.getEnvelopeInternal());
@@ -68,7 +76,7 @@ public class PostalSource {
         return matches;
     }
 
-    public void computeVoroni() {
+    private void computeVoroni() {
         VoronoiDiagramBuilder vdb = new VoronoiDiagramBuilder();
         List<Tuple2<PostalCode, Coordinate>> collect = postalCodes.values().stream().map(pc -> Tuple.tuple(pc, new Coordinate(pc.longitude, pc.latitude))).collect(Collectors.toList());
         List<Coordinate> coords = collect.stream().map(Tuple2::v2).collect(Collectors.toList());
@@ -86,7 +94,7 @@ public class PostalSource {
             if (query.isEmpty()) {
                 System.out.println("Could not find a match for " + t.v1.postal);
             } else {
-                Optional<Geometry> match = query.stream().filter(geo -> point.intersects(geo)).findFirst();
+                Optional<Geometry> match = query.stream().filter(point::intersects).findFirst();
                 if (match.isPresent()) {
                     Geometry geometry = match.get();
                     t.v1.wkt = geometry.toText();
