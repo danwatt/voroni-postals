@@ -22,13 +22,18 @@ public class PostalSource {
     private Map<String, PostalCode> postalCodes;
     private SpatialIndex voroniIndex = new STRtree();
 
-    private static final PostalSource instance;
-
-    static {
-        instance = new PostalSource();
-    }
+    private static PostalSource instance;
 
     public static PostalSource getInstance() {
+        if (null == instance) {
+            synchronized (geometryFactory) {
+                if (null == instance) {
+                    System.out.println("Loading postal codes");
+                    instance = new PostalSource();
+                    System.out.println("Loaded " + instance.postalCodes.size() +" postal codes / polgyons");
+                }
+            }
+        }
         return instance;
     }
 
