@@ -4,7 +4,6 @@ import org.rapidoid.annotation.Controller;
 import org.rapidoid.annotation.GET;
 import org.rapidoid.annotation.Page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,6 +19,6 @@ public class VoroniController {
         String[] parts = point.split(",");
         double lat = Double.parseDouble(parts[0]);
         double lon = Double.parseDouble(parts[1]);
-        return PostalSource.getInstance().getAroundPoint(lat,lon);
+        return PostalSource.getInstance().getNearbyCounties(lat,lon);
     }
 }
