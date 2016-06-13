@@ -40,6 +40,17 @@
             })
         }
 
+        function loadUnion(postals,myMap,clickHandler) {
+            $.get("/postals/union/" + postals, function (data) {
+                var selectedLayer = null;
+                data.forEach(function (postalCode, index) {
+                    var item = addVoroniCell(myMap, postalCode.wkt, postalCode.postal, postalCode.color);
+                    item.layer.on('click',clickHandler);
+                    polygons.push(item.layer);
+                });
+            })
+        }
+
         function init() {
             var myMap = L.map('mapid', {
                 zoomControl: true,
@@ -63,6 +74,12 @@
             myMap.defaults = {
                 editable: true, color: '#AA0000', weight: 1, opacity: 1.0, fillColor: '#AA0000', fillOpacity: 0.5
             };
+
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+                loadUnion(hash,myMap,clickHandler);
+            } else {
+            }
 
 
             myMap.on('click', clickHandler);
