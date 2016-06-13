@@ -30,7 +30,7 @@
         }
 
         function loadVoroniCells(centerPoint,myMap,clickHandler) {
-            $.get("/nearby/counties/" + centerPoint, function (data) {
+            $.get("/nearby/postals/" + centerPoint, function (data) {
                 var selectedLayer = null;
                 data.forEach(function (postalCode, index) {
                     var item = addVoroniCell(myMap, postalCode.wkt, postalCode.postal, postalCode.color);

@@ -119,17 +119,10 @@ public class PostalSource {
         Point point = geometryFactory.createPoint(new Coordinate(lon, lat));
         List<Geometry> results = getNeighbors(postalIndex, point.buffer(0.5));
 
-        List<PostalCode> matches = results.stream().map(geo -> postalCodes.get(geo.getUserData()).clone()).collect(toList());
-        Map<String, String> cityStateColors = new TreeMap<>(matches.stream().map(pc -> pc.city + "," + pc.state).distinct().collect(Collectors.toMap(cs -> cs, cs -> "")));
-        AtomicInteger ai = new AtomicInteger(0);
-        cityStateColors.keySet().stream().forEach(key -> {
-                    cityStateColors.put(key, MAP_COLORS.get(ai.getAndIncrement() % MAP_COLORS.size()));
-                }
-        );
-        matches.forEach(pc -> {
-            pc.color = cityStateColors.get(pc.city + "," + pc.state);
-        });
-        return matches;
+        List<Tuple2<Geometry,PostalCode>> matches = results.stream().map(geo -> Tuple.tuple(geo,postalCodes.get(geo.getUserData()).clone())).collect(toList());
+        color(matches);
+
+        return matches.stream().map(t->t.v2()).collect(Collectors.toList());
     }
 
     private void computeVoroni() {
@@ -152,6 +145,7 @@ public class PostalSource {
                     Geometry geometry = match.get();
                     t.v1.wkt = geometry.toText();
                     geometry.setUserData(t.v1.postal);
+                    postalIndex.insert(geometry.getEnvelopeInternal(),geometry);
                 }
             }
         });

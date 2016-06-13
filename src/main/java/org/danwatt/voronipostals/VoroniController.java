@@ -14,11 +14,19 @@ public class VoroniController {
         return "";
     }
 
-    @GET("/nearby/{point}")
+    @GET("/nearby/counties/{point}")
     public List<PostalCode> nearby(String point) {
         String[] parts = point.split(",");
         double lat = Double.parseDouble(parts[0]);
         double lon = Double.parseDouble(parts[1]);
         return PostalSource.getInstance().getNearbyCounties(lat,lon);
+    }
+
+    @GET("/nearby/postals/{point}")
+    public List<PostalCode> nearbyPostals(String point) {
+        String[] parts = point.split(",");
+        double lat = Double.parseDouble(parts[0]);
+        double lon = Double.parseDouble(parts[1]);
+        return PostalSource.getInstance().getPostalsAroundPoint(lat,lon);
     }
 }
