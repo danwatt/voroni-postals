@@ -17,7 +17,7 @@ class IntegrationTests {
                         "-86.82826441096637 35.752876221898, " +
                         "-86.79494147956763 35.674347371424176, " +
                         "-86.82323538120409 35.59792965418384, " +
-                        "-86.88375804739363 35.568901320691296," +
+                        "-86.88375804739363 35.568901320691296, " +
                         "-86.9025998856794 35.576340115757084, " +
                         "-87.0099469825848 35.7169363134739, " +
                         "-87.02651939257072 35.747743273561504))")
@@ -38,5 +38,14 @@ class IntegrationTests {
     @Test
     fun county() {
         assertThat(postalSource.countyIndex.size()).isEqualTo(3149)
+    }
+
+    @Test
+    fun usBorderBuilder() {
+        val boundary = UsBorderBuilder.buildSimplifiedUsBoundary()
+        println(boundary.toText())
+        assertThat(boundary.numGeometries).isEqualTo(49)
+        assertThat(boundary.numPoints).isEqualTo(2627)
+
     }
 }

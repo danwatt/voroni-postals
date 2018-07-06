@@ -19,15 +19,8 @@ class PostalSource private constructor() {
 
     init {
         try {
-            val res = ClassLoader.getSystemResource("US.txt")
-            val path: Path
-            if (res.toString().startsWith("file:")) {
-                path = Paths.get(res.toURI())
-            } else {
-                val parts = res.toString().split("!".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                val fs = FileSystems.newFileSystem(URI.create(parts[0]), HashMap<String, Any>())
-                path = fs.getPath(parts[1])
-            }
+
+            val path: Path = GeoUtils.getPath("US.txt")
             postalCodes = Files.lines(path)
                     .map { PostalCode.loadLine(it) }
                     .distinct()
@@ -40,6 +33,7 @@ class PostalSource private constructor() {
         }
 
     }
+
 
     private fun buildCounties() {
         val countyNameToPolygon: Map<String, Geometry> = postalCodes.values.map {

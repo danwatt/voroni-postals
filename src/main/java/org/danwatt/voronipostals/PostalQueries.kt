@@ -11,7 +11,6 @@ object PostalQueries {
     fun collectNearbyCounties(lat: Double, lon: Double, countyIndex: STRtree): List<GeoContainer> {
         val point = GeoUtils.geometryFactory.createPoint(Coordinate(lon, lat))
         val results = GeoUtils.getNeighbors(countyIndex, point.buffer(2.0))
-
         val matches = results.map { geo -> Pair(geo, createCounty(geo)) }
         GeoUtils.color(matches)
         return matches.map { it.second }
@@ -38,26 +37,22 @@ object PostalQueries {
 
     fun unionPostalCodes(strings: List<String>, postalCodes: Map<String, PostalCode>): Optional<PostalCode> {
         val union = strings.stream()
-                .map<Geometry> { postal ->
-                    val wkt = postalCodes[postal]!!.wkt
-                    parse(wkt)
-                }
+                .map<Geometry> { parse(postalCodes[it]!!.wkt) }
                 .filter { it != null }
                 .reduce({ obj, other -> obj.union(other) })
         return if (union.isPresent) {
-            union.map{ createPostalFromGeo(it) }
+            union.map { createPostalFromGeo(it) }
         } else {
             Optional.empty()
         }
     }
 
     private fun parse(wkt: String?): Geometry? {
-        try {
-            return GeoUtils.reader.read(wkt!!)
+        return try {
+            GeoUtils.reader.read(wkt!!)
         } catch (ex: Exception) {
-            return null
+            null
         }
-
     }
 
     private fun createPostalFromGeo(geo: Geometry): PostalCode {
