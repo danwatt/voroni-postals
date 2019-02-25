@@ -1,6 +1,5 @@
 package org.danwatt.voronipostals;
 
-import java.util.Objects;
 
 public class PostalCode implements Cloneable {
     public String country;
