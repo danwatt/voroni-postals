@@ -5,7 +5,6 @@ import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.geom.GeometryCollection
 import com.vividsolutions.jts.index.strtree.STRtree
 import com.vividsolutions.jts.triangulate.VoronoiDiagramBuilder
-import org.apache.commons.lang3.time.StopWatch
 
 object VoroniComputer {
     fun computeVoroni(

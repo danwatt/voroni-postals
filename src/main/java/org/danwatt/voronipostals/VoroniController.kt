@@ -14,6 +14,11 @@ class VoroniController(private val instance: PostalSource = PostalSource.instanc
         return ""
     }
 
+    @Page("/postals")
+    fun postals(): Any {
+        return ""
+    }
+
     @GET("/nearby/counties/{point}")
     fun nearby(point: String): List<GeoContainer> {
         val parts = point.split(",".toRegex()).dropLastWhile(String::isEmpty)

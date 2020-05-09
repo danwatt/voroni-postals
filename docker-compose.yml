@@ -1,0 +1,18 @@
+---
+
+version: '3.7'
+services:
+  builder:
+    build:
+      context: .
+      target: build
+    volumes:
+      - "${PWD}:/app:cached"
+      - "${HOME}/.m2:/root/.m2:cached"
+    working_dir: "/app"
+  web:
+    build:
+      context: .
+      target: run
+    ports:
+      - 8080:8080
