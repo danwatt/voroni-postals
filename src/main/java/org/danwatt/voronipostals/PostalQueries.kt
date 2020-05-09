@@ -3,8 +3,6 @@ package org.danwatt.voronipostals
 import com.vividsolutions.jts.geom.Coordinate
 import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.index.strtree.STRtree
-import org.apache.commons.lang3.StringUtils
-import java.util.*
 
 object PostalQueries {
 
@@ -17,14 +15,20 @@ object PostalQueries {
     }
 
     private fun createCounty(geo: Geometry): County {
-        val state = StringUtils.substringAfterLast(geo.userData as String, ",")
-        val county = StringUtils.substringBeforeLast(geo.userData as String, ",")
-        val c = County(state, county)
-        c.wkt = geo.toText()
-        return c
+        val userData = geo.userData as String
+        val state = userData.substringAfterLast(",")
+        val county = userData.substringBeforeLast(",")
+        return County(state, county).apply {
+            wkt = geo.toText()
+        }
     }
 
-    fun collectNearbyPostals(lat: Double, lon: Double, postalIndex: STRtree, postalCodes: Map<String, PostalCode>): List<GeoContainer> {
+    fun collectNearbyPostals(
+        lat: Double,
+        lon: Double,
+        postalIndex: STRtree,
+        postalCodes: Map<String, PostalCode>
+    ): List<GeoContainer> {
         val point = GeoUtils.geometryFactory.createPoint(Coordinate(lon, lat))
         val results = GeoUtils.getNeighbors(postalIndex, point.buffer(0.5))
 
@@ -35,30 +39,26 @@ object PostalQueries {
         return matches.map { it.second }
     }
 
-    fun unionPostalCodes(strings: List<String>, postalCodes: Map<String, PostalCode>): Optional<PostalCode> {
+    fun unionPostalCodes(strings: List<String>, postalCodes: Map<String, PostalCode>): PostalCode? {
         val union = strings.stream()
-                .map<Geometry> { parse(postalCodes[it]!!.wkt) }
-                .filter { it != null }
-                .reduce({ obj, other -> obj.union(other) })
-        return if (union.isPresent) {
-            union.map { createPostalFromGeo(it) }
-        } else {
-            Optional.empty()
+            .map<Geometry> { parse(postalCodes[it]!!.wkt) }
+            .filter { it != null }
+            .reduce { obj, other -> obj.union(other) }
+        return when {
+            union.isPresent -> union.map { createPostalFromGeo(it) }.orElse(null)
+            else -> null
         }
     }
 
-    private fun parse(wkt: String?): Geometry? {
-        return try {
-            GeoUtils.reader.read(wkt!!)
-        } catch (ex: Exception) {
-            null
-        }
+    private fun parse(wkt: String?): Geometry? = try {
+        GeoUtils.reader.read(wkt!!)
+    } catch (ex: Exception) {
+        null
     }
 
-    private fun createPostalFromGeo(geo: Geometry): PostalCode {
-        val pc = PostalCode()
-        pc.wkt = geo.toText()
-        pc.color = GeoUtils.MAP_COLORS[1]
-        return pc
-    }
+    private fun createPostalFromGeo(geo: Geometry): PostalCode =
+        PostalCode().apply {
+            wkt = geo.toText()
+            color = GeoUtils.MAP_COLORS[1]
+        }
 }

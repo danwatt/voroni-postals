@@ -2,12 +2,8 @@ package org.danwatt.voronipostals
 
 import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.index.strtree.STRtree
-
-import java.net.URI
-import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.*
 import java.util.stream.Collectors
 
@@ -24,7 +20,7 @@ class PostalSource private constructor() {
             postalCodes = Files.lines(path)
                     .map { PostalCode.loadLine(it) }
                     .distinct()
-                    .collect(Collectors.toMap(PostalCode::postal, { it }))
+                    .collect(Collectors.toMap(PostalCode::postal) { it })
             VoroniComputer.computeVoroni(postalCodes.values, postalIndex)
             buildCounties()
         } catch (ex: Exception) {
@@ -46,7 +42,7 @@ class PostalSource private constructor() {
                     name to postalCodes
                             .map { it.second }
                             .reduce(::mergeGeometries)
-                }.toMap();
+                }.toMap()
 
         countyNameToPolygon.forEach { (_, v) -> countyIndex.insert(v.envelopeInternal, v) }
     }

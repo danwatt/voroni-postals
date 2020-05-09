@@ -5,13 +5,13 @@ import org.junit.Test
 
 class IntegrationTests {
     companion object {
-        val postalSource = PostalSource.instance;
+        val postalSource = PostalSource.instance
     }
 
     @Test
     fun postals() {
         assertThat(postalSource.postalCodes).hasSize(40937)
-        assertThat(postalSource.postalCodes.get("37174")!!.wkt).isEqualTo(
+        assertThat(postalSource.postalCodes["37174"]!!.wkt).isEqualTo(
                 "POLYGON ((-87.02651939257072 35.747743273561504, " +
                         "-87.02088560603968 35.781233758795366, " +
                         "-86.82826441096637 35.752876221898, " +
@@ -24,8 +24,8 @@ class IntegrationTests {
         val nearby = PostalQueries.collectNearbyPostals(35.74205383068037, -86.92005157470703,
                 postalSource.postalIndex, postalSource.postalCodes)
 
-        assertThat((nearby.get(0) as PostalCode).postal).isEqualTo("37033")
-        assertThat(nearby.get(0).wkt).isEqualTo(
+        assertThat((nearby[0] as PostalCode).postal).isEqualTo("37033")
+        assertThat(nearby[0].wkt).isEqualTo(
                 "POLYGON ((-87.64154073797337 35.66040243998613, " +
                         "-87.64265440091671 35.67213302298933, " +
                         "-87.58232460924867 35.80072713674886, " +
@@ -46,6 +46,5 @@ class IntegrationTests {
         println(boundary.toText())
         assertThat(boundary.numGeometries).isEqualTo(49)
         assertThat(boundary.numPoints).isEqualTo(2627)
-
     }
 }

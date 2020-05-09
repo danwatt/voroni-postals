@@ -26,10 +26,10 @@ class HoleRemoverMapOp(private val areaTolerance: Double) : GeometryMapper.MapOp
             }
         }
 
-        return when {
-            holesToKeep.size == geom.numInteriorRing -> geom
+        return when (holesToKeep.size) {
+            geom.numInteriorRing -> geom
             else -> geom.factory.createPolygon(geom.exteriorRing as LinearRing,
-                    GeometryFactory.toLinearRingArray(holesToKeep))
+                GeometryFactory.toLinearRingArray(holesToKeep))
         }
 
     }
