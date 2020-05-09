@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c359cd8-27c4-4147-822a-3d99882bbdc5" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/GeoUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/GeoUtils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/PostalQueries.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/PostalQueries.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/VoroniComputer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/VoroniComputer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/VoroniController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/VoroniController.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
