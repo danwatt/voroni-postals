@@ -5,7 +5,6 @@ import com.vividsolutions.jts.geom.GeometryFactory
 import com.vividsolutions.jts.index.SpatialIndex
 import com.vividsolutions.jts.index.strtree.STRtree
 import com.vividsolutions.jts.io.WKTReader
-import java.util.*
 import com.vividsolutions.jts.geom.PrecisionModel
 import java.net.URI
 import java.nio.file.FileSystems

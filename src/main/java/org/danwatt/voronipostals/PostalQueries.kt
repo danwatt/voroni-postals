@@ -3,8 +3,6 @@ package org.danwatt.voronipostals
 import com.vividsolutions.jts.geom.Coordinate
 import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.index.strtree.STRtree
-import org.apache.commons.lang3.StringUtils
-import java.util.*
 
 object PostalQueries {
 
@@ -17,8 +15,9 @@ object PostalQueries {
     }
 
     private fun createCounty(geo: Geometry): County {
-        val state = StringUtils.substringAfterLast(geo.userData as String, ",")
-        val county = StringUtils.substringBeforeLast(geo.userData as String, ",")
+        val userData = geo.userData as String
+        val state = userData.substringAfterLast(",")
+        val county = userData.substringBeforeLast(",")
         return County(state, county).apply {
             wkt = geo.toText()
         }
@@ -40,14 +39,14 @@ object PostalQueries {
         return matches.map { it.second }
     }
 
-    fun unionPostalCodes(strings: List<String>, postalCodes: Map<String, PostalCode>): Optional<PostalCode> {
+    fun unionPostalCodes(strings: List<String>, postalCodes: Map<String, PostalCode>): PostalCode? {
         val union = strings.stream()
             .map<Geometry> { parse(postalCodes[it]!!.wkt) }
             .filter { it != null }
             .reduce { obj, other -> obj.union(other) }
         return when {
-            union.isPresent -> union.map { createPostalFromGeo(it) }
-            else -> Optional.empty()
+            union.isPresent -> union.map { createPostalFromGeo(it) }.orElse(null)
+            else -> null
         }
     }
 

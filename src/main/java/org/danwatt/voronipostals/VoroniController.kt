@@ -34,8 +34,8 @@ class VoroniController(private val instance: PostalSource = PostalSource.instanc
     @GET("/postals/union/{postals}")
     fun getUnion(postals: String): List<GeoContainer> {
         val splitPostals = postals.split(",".toRegex()).dropLastWhile(String::isEmpty)
-        val union = PostalQueries.unionPostalCodes(splitPostals, instance.postalCodes)
-        return union.map { singletonList(it) }.orElse(emptyList())
+        val union = PostalQueries.unionPostalCodes(splitPostals, instance.postalCodes) ?: return emptyList()
+        return singletonList(union)
 
     }
 

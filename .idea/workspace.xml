@@ -2,18 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c359cd8-27c4-4147-822a-3d99882bbdc5" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/GeoUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/GeoUtils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/HoleRemover.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/HoleRemover.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/PostalQueries.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/PostalQueries.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/PostalSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/PostalSource.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/UsBorderBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/UsBorderBuilder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/VoroniComputer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/VoroniComputer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/danwatt/voronipostals/IntegrationTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/danwatt/voronipostals/IntegrationTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/voroni-postals.iml" beforeDir="false" afterPath="$PROJECT_DIR$/voroni-postals.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/VoroniController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/danwatt/voronipostals/VoroniController.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,10 +206,14 @@
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
     <state x="586" y="434" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.23.1680.1027@0.23.1680.1027" timestamp="1588990037414" />
-    <state x="505" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1588989734770">
+    <state x="541" y="293" width="598" height="486" key="find.popup" timestamp="1588990386608">
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
-    <state x="505" y="250" width="670" height="676" key="search.everywhere.popup/0.23.1680.1027@0.23.1680.1027" timestamp="1588989734770" />
+    <state x="541" y="293" width="598" height="486" key="find.popup/0.23.1680.1027@0.23.1680.1027" timestamp="1588990386608" />
+    <state x="505" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1588990496001">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state x="505" y="250" width="670" height="676" key="search.everywhere.popup/0.23.1680.1027@0.23.1680.1027" timestamp="1588990496001" />
   </component>
   <component name="masterDetails">
     <states>

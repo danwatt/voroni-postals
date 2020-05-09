@@ -12,7 +12,6 @@ object VoroniComputer {
         postalCodes: Collection<PostalCode>,
         postalIndex: STRtree
     ) {
-        val sw = StopWatch()
         val diagramBuilder = VoronoiDiagramBuilder()
         val postalToCenter = postalCodes.map { Pair(it, Coordinate(it.longitude, it.latitude)) }
         diagramBuilder.setSites(postalToCenter.map { it.second })
