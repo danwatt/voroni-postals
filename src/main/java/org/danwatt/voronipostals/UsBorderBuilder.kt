@@ -4,20 +4,11 @@ import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.io.ParseException
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier
 import org.apache.commons.io.FileUtils
-
 import java.io.File
 import java.io.IOException
-import java.net.URI
 import java.net.URISyntaxException
-import java.net.URL
 import java.nio.charset.Charset
-import java.nio.file.FileSystem
-import java.nio.file.FileSystems
-import java.nio.file.Path
-import java.nio.file.Paths
-
 import java.nio.file.Files.readAllLines
-import java.util.Collections.emptyMap
 
 class UsBorderBuilder {
 
@@ -29,9 +20,9 @@ class UsBorderBuilder {
 
     companion object {
 
-        val US_BORDER_EXPANSION = 0.06
-        val US_BORDER_SIMPLIFICATION = 0.025
-        val HOLE_TOLERANCE = 0.05
+        private const val US_BORDER_EXPANSION = 0.06
+        private const val US_BORDER_SIMPLIFICATION = 0.025
+        private const val HOLE_TOLERANCE = 0.05
 
         @Throws(IOException::class, URISyntaxException::class, ParseException::class)
         internal fun buildSimplifiedUsBoundary(): Geometry {
