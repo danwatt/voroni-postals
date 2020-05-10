@@ -1,4 +1,4 @@
-package org.danwatt.voronipostals
+package org.danwatt.voronipostals.component
 
 import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.geom.GeometryFactory
@@ -6,6 +6,7 @@ import com.vividsolutions.jts.index.SpatialIndex
 import com.vividsolutions.jts.index.strtree.STRtree
 import com.vividsolutions.jts.io.WKTReader
 import com.vividsolutions.jts.geom.PrecisionModel
+import org.danwatt.voronipostals.representation.GeoContainer
 import java.net.URI
 import java.nio.file.FileSystems
 import java.nio.file.Path

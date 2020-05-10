@@ -23,7 +23,7 @@
         function addVoroniCell(map, voroniPolygonWkt, postalCode, color) {
             var selectedLayer = omnivore.wkt.parse(voroniPolygonWkt);
             selectedLayer.clickable = true;
-            selectedLayer.addTo(map);
+            selectedLayer.addTo(counties);
             selectedLayer.setStyle({weight: 1, fillColor: color, color: color, fillOpacity: 0.5});
             var label = null;
             return {layer: selectedLayer, label: label};
@@ -59,15 +59,11 @@
 
             myMap.setView([39.828175, -98.5795], 5);
 
-
             myMap.defaults = {
                 editable: true, color: '#AA0000', weight: 1, opacity: 1.0, fillColor: '#AA0000', fillOpacity: 0.5
             };
-
-
             myMap.on('click', clickHandler);
         }
-
     </script>
 
 </head>

@@ -1,9 +1,11 @@
-package org.danwatt.voronipostals
+package org.danwatt.voronipostals.service
 
 import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.io.ParseException
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier
 import org.apache.commons.io.FileUtils
+import org.danwatt.voronipostals.component.GeoUtils
+import org.danwatt.voronipostals.component.HoleRemover
 import java.io.File
 import java.io.IOException
 import java.net.URISyntaxException
@@ -14,7 +16,8 @@ class UsBorderBuilder {
 
     @Throws(ParseException::class, IOException::class, URISyntaxException::class)
     fun boundaryOnly() {
-        val less = buildSimplifiedUsBoundary()
+        val less =
+            buildSimplifiedUsBoundary()
         FileUtils.writeStringToFile(File("/tmp/out.wk"), less.toText(), Charset.forName("UTF-8"))
     }
 
@@ -30,9 +33,12 @@ class UsBorderBuilder {
             val mexico = loadFile("mex.wkt")
             var america = loadFile("us.wkt")
 
-            america = DouglasPeuckerSimplifier.simplify(america.buffer(US_BORDER_EXPANSION), US_BORDER_SIMPLIFICATION)
-                    .difference(canada)
-                    .difference(mexico)
+            america = DouglasPeuckerSimplifier.simplify(
+                america.buffer(US_BORDER_EXPANSION),
+                US_BORDER_SIMPLIFICATION
+            )
+                .difference(canada)
+                .difference(mexico)
 
             var usGeom: Geometry = GeoUtils.lowPrecisionFactory.createGeometry(america)!!
             usGeom = HoleRemover.cleanSmallHoles(usGeom, HOLE_TOLERANCE)

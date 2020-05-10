@@ -1,7 +1,9 @@
-package org.danwatt.voronipostals
+package org.danwatt.voronipostals.service
 
 import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.index.strtree.STRtree
+import org.danwatt.voronipostals.component.GeoUtils
+import org.danwatt.voronipostals.representation.PostalCode
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
