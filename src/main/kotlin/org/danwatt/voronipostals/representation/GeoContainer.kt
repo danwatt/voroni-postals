@@ -1,4 +1,4 @@
-package org.danwatt.voronipostals
+package org.danwatt.voronipostals.representation
 
 sealed class GeoContainer {
     var wkt: String? = null
@@ -24,13 +24,15 @@ data class PostalCode(val country: String = "",
     companion object {
         fun loadLine(line: String): PostalCode {
             val parts = line.split("\t".toRegex()).dropLastWhile(String::isEmpty)
-            return PostalCode(country = parts[0],
-                    postal = parts[1],
-                    city = parts[2],
-                    state = parts[3],
-                    county = parts[5],
-                    latitude = java.lang.Double.parseDouble(parts[9]),
-                    longitude = java.lang.Double.parseDouble(parts[10]))
+            return PostalCode(
+                country = parts[0],
+                postal = parts[1],
+                city = parts[2],
+                state = parts[3],
+                county = parts[5],
+                latitude = java.lang.Double.parseDouble(parts[9]),
+                longitude = java.lang.Double.parseDouble(parts[10])
+            )
         }
     }
 }

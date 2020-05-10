@@ -1,4 +1,4 @@
-package org.danwatt.voronipostals
+package org.danwatt.voronipostals.component
 
 import com.vividsolutions.jts.geom.*
 import com.vividsolutions.jts.geom.util.GeometryMapper
@@ -9,7 +9,9 @@ object HoleRemover {
 
     @JvmStatic
     fun cleanSmallHoles(geom: Geometry, areaTolerance: Double): Geometry {
-        return GeometryMapper.map(geom, HoleRemoverMapOp(areaTolerance))
+        return GeometryMapper.map(geom,
+            HoleRemoverMapOp(areaTolerance)
+        )
     }
 }
 
