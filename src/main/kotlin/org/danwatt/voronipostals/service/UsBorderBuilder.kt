@@ -46,10 +46,9 @@ class UsBorderBuilder {
         }
 
         @Throws(IOException::class, URISyntaxException::class, ParseException::class)
-        private fun loadFile(file: String): Geometry {
-            val path = GeoUtils.getPath(file)
-            val usWkt = readAllLines(path)[0]
-            return GeoUtils.reader.read(usWkt)
-        }
+        private fun loadFile(file: String): Geometry =
+            UsBorderBuilder::class.java.getResource(file)
+                .readText()
+                .let { GeoUtils.reader.read(it) }
     }
 }

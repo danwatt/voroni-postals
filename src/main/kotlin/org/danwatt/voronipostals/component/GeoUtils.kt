@@ -46,15 +46,4 @@ object GeoUtils {
         return matches.filter { it.intersects(geometry) && it !== geometry }
     }
 
-    @JvmStatic
-    fun getPath(filename: String): Path {
-        val res = ClassLoader.getSystemResource(filename)
-        return if (res.toString().startsWith("file:")) {
-            Paths.get(res.toURI())
-        } else {
-            val parts = res.toString().split("!".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            val fs = FileSystems.newFileSystem(URI.create(parts[0]), HashMap<String, Any>())
-            fs.getPath(parts[1])
-        }
-    }
 }

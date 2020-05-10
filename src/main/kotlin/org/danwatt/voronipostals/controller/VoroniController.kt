@@ -1,6 +1,7 @@
 package org.danwatt.voronipostals.controller
 
 import org.danwatt.voronipostals.representation.GeoContainer
+import org.danwatt.voronipostals.representation.GeoResults
 import org.danwatt.voronipostals.service.PostalQueries
 import org.danwatt.voronipostals.service.PostalSource
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,39 +15,44 @@ class VoroniController(
     private val instance: PostalSource = PostalSource.instance
 ) {
     @GetMapping("/nearby/counties/{point}")
-    fun nearby(@PathVariable("point") point: String): List<GeoContainer> {
+    fun nearby(@PathVariable("point") point: String): GeoResults {
         val parts = point.split(",".toRegex()).dropLastWhile(String::isEmpty)
         val lat = parseDouble(parts[0])
         val lon = parseDouble(parts[1])
-        return PostalQueries.collectNearbyCounties(
-            lat,
-            lon,
-            instance.countyIndex
+        return GeoResults(
+            PostalQueries.collectNearbyCounties(
+                lat,
+                lon,
+                instance.countyIndex
+            )
         )
     }
 
     @GetMapping("/nearby/postals/{point}")
-    fun nearbyPostals(@PathVariable("point") point: String): List<GeoContainer> {
+    fun nearbyPostals(@PathVariable("point") point: String): GeoResults {
         val parts = point.split(",".toRegex()).dropLastWhile(String::isEmpty)
         val lat = parseDouble(parts[0])
         val lon = parseDouble(parts[1])
 
-        return PostalQueries.collectNearbyPostals(
-            lat,
-            lon,
-            instance.postalIndex,
-            instance.postalCodes
+        return GeoResults(
+            PostalQueries.collectNearbyPostals(
+                lat,
+                lon,
+                instance.postalIndex,
+                instance.postalCodes
+            )
         )
+
     }
 
     @GetMapping("/postals/union/{postals}")
-    fun getUnion(@PathVariable("postals") postals: String): List<GeoContainer> {
+    fun getUnion(@PathVariable("postals") postals: String): GeoResults {
         val splitPostals = postals.split(",".toRegex()).dropLastWhile(String::isEmpty)
         val union = PostalQueries.unionPostalCodes(
             splitPostals,
             instance.postalCodes
-        ) ?: return emptyList()
-        return singletonList(union)
+        ) ?: return GeoResults(emptyList())
+        return GeoResults(singletonList(union))
     }
 
 }

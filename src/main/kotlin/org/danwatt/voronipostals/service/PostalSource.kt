@@ -4,6 +4,7 @@ import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.index.strtree.STRtree
 import org.danwatt.voronipostals.component.GeoUtils
 import org.danwatt.voronipostals.representation.PostalCode
+import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
@@ -18,11 +19,14 @@ class PostalSource private constructor() {
     init {
         try {
 
-            val path: Path = GeoUtils.getPath("US.txt")
-            postalCodes = Files.lines(path)
-                    .map { PostalCode.loadLine(it) }
-                    .distinct()
-                    .collect(Collectors.toMap(PostalCode::postal) { it })
+            val resource = GeoUtils::class.java.classLoader.getResource("US.txt")
+            val text = resource.readText(Charset.forName("UTF-8"))
+            postalCodes = text.lineSequence()
+                .filter { it.isNotBlank() }
+                .map { PostalCode.loadLine(it) }
+                .distinct()
+                .map { it.postal to it }
+                .toMap()
             VoroniComputer.computeVoroni(postalCodes.values, postalIndex)
             buildCounties()
         } catch (ex: Exception) {
@@ -36,15 +40,15 @@ class PostalSource private constructor() {
     private fun buildCounties() {
         val countyNameToPolygon: Map<String, Geometry> = postalCodes.values.map {
             val geometry = GeoUtils.reader.read(it.wkt!!)
-            geometry.userData = it.county + ", " + it.state
+            geometry.userData = "${it.county}, ${it.state}"
             geometry.userData as String to geometry
         }
-                .groupBy { it.first }
-                .map { (name, postalCodes) ->
-                    name to postalCodes
-                            .map { it.second }
-                            .reduce(::mergeGeometries)
-                }.toMap()
+            .groupBy { it.first }
+            .map { (name, postalCodes) ->
+                name to postalCodes
+                    .map { it.second }
+                    .reduce(::mergeGeometries)
+            }.toMap()
 
         countyNameToPolygon.forEach { (_, v) -> countyIndex.insert(v.envelopeInternal, v) }
     }
