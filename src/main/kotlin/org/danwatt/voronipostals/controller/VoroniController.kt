@@ -2,7 +2,9 @@ package org.danwatt.voronipostals.controller
 
 import org.danwatt.voronipostals.repository.PostalSource
 import org.danwatt.voronipostals.representation.GeoResults
+import org.danwatt.voronipostals.service.CountyService
 import org.danwatt.voronipostals.service.PostalQueries
+import org.danwatt.voronipostals.service.PostalService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -10,32 +12,22 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class VoroniController(
-    private val postalSource: PostalSource
+    val countyService: CountyService,
+    val postalService: PostalService
 ) {
-
     @GetMapping("/nearby/counties/{point}")
     fun counties(@PathVariable("point") point: String): ResponseEntity<GeoResults> {
         val (lat, lon) = parseLatLon(point) ?: return ResponseEntity.badRequest().build()
-        val counties = PostalQueries.collectNearbyCounties(
-            lat,
-            lon,
-            postalSource.countyIndex
-        )
+        val counties = countyService.collectNearbyCounties(lat, lon)
         return ResponseEntity.ok(GeoResults(counties))
     }
 
     @GetMapping("/nearby/postals/{point}")
     fun nearbyPostals(@PathVariable("point") point: String): ResponseEntity<GeoResults> {
         val (lat, lon) = parseLatLon(point) ?: return ResponseEntity.badRequest().build()
-        val postals = PostalQueries.collectNearbyPostals(
-            lat,
-            lon,
-            postalSource.postalIndex,
-            postalSource.postalCodes
-        )
+        val postals = postalService.collectNearbyPostals(lat, lon)
         return ResponseEntity.ok(GeoResults(postals))
     }
-
 }
 
 typealias Point = Pair<Double, Double>

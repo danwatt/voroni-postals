@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions.*
 import org.danwatt.voronipostals.representation.PostalCode
 import org.danwatt.voronipostals.service.PostalQueries
 import org.danwatt.voronipostals.repository.PostalSource
+import org.danwatt.voronipostals.service.PostalService
 import org.junit.Test
 
 class GeometryTests {
@@ -25,8 +26,7 @@ class GeometryTests {
                         "-86.9025998856794 35.576340115757084, " +
                         "-87.0099469825848 35.7169363134739, " +
                         "-87.02651939257072 35.747743273561504))")
-        val nearby = PostalQueries.collectNearbyPostals(35.74205383068037, -86.92005157470703,
-                postalSource.postalIndex, postalSource.postalCodes)
+        val nearby = PostalService(postalSource).collectNearbyPostals(35.74205383068037, -86.92005157470703)
 
         assertThat((nearby[0] as PostalCode).postal).isEqualTo("37033")
         assertThat(nearby[0].wkt).isEqualTo(
