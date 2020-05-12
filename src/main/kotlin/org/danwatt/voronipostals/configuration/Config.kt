@@ -9,7 +9,10 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class Config {
     @Bean
-    fun postalSource(@Value("\${voroni.postal.file}") postalFile: String) = PostalSource.load(postalFile)
+    fun postalSource(
+        @Value("\${voroni.postal.file}") postalFile: String,
+        @Value("\${voroni.boundary.file}") boundaryFile: String
+    ) = PostalSource.load(postalFile, boundaryFile)
 
     @Bean
     fun geometryFactory() = GeometryFactory()

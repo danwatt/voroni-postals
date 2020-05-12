@@ -1,5 +1,6 @@
 package org.danwatt.voronipostals
 
+import com.vividsolutions.jts.index.strtree.STRtree
 import org.assertj.core.api.Assertions.*
 import org.danwatt.voronipostals.representation.PostalCode
 import org.danwatt.voronipostals.service.PostalQueries
@@ -9,7 +10,7 @@ import org.junit.Test
 
 class GeometryTests {
     companion object {
-        val postalSource = PostalSource.load("US.txt")
+        val postalSource = PostalSource.load("US.txt", "us.wkt")
     }
 
     @Test
@@ -41,7 +42,7 @@ class GeometryTests {
 
     @Test
     fun county() {
-        assertThat(postalSource.countyIndex.size()).isEqualTo(3149)
+        assertThat((postalSource.countyIndex as STRtree).size()).isEqualTo(3149)
     }
 
     @Test

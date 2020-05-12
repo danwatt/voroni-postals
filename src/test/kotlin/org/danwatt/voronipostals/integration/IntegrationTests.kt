@@ -50,29 +50,21 @@ class IntegrationTests : BaseTests() {
         mockMvc.get("/nearby/postals/{point}", nonNumeric).andExpectBadRequest()
         mockMvc.get("/nearby/counties/{point}", nonNumeric).andExpectBadRequest()
     }
-
 /*
     @Test
-    fun `no counties near null island`() {
+    fun `nothing exists near null island`() {
         val nullIsland = "0,0"
-        mockMvc.get("/nearby/counties/{point}", nullIsland) {
-        }.andExpect {
-            status { isNotFound }
-        }
+        mockMvc.get("/nearby/counties/{point}", nullIsland).andExpectNotFound()
+        mockMvc.get("/nearby/postals/{point}", nullIsland).andExpectNotFound()
     }
-
-    @Test
-    fun `no postals near null island`() {
-        val nullIsland = "0,0"
-        mockMvc.get("/nearby/postals/{point}", nullIsland) {
-        }.andExpect {
-            status { isNotFound }
-        }
-    }
-
  */
+
 }
 
 private fun ResultActionsDsl.andExpectBadRequest(): ResultActionsDsl = this.andExpect {
     status { isBadRequest }
+}
+
+private fun ResultActionsDsl.andExpectNotFound(): ResultActionsDsl = this.andExpect {
+    status { isNotFound }
 }

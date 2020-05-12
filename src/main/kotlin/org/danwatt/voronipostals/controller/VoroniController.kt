@@ -15,7 +15,6 @@ class VoroniController(
     private val postalSource: PostalSource
 ) {
 
-
     @GetMapping("/nearby/counties/{point}")
     fun counties(@PathVariable("point") point: String): ResponseEntity<GeoResults> {
         val (lat, lon) = parseLatLon(point) ?: return ResponseEntity.badRequest().build()
