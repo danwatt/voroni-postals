@@ -5,6 +5,10 @@
 * [Blog post description](https://www.danwatt.org/2016/06/postal-code-voroni-diagram/)
 * [Heroku](http://voroni-postals.herokuapp.com/postals.html) - This app is deployed to a free Heroku instance, so it may shut down due to inactivity. 
 
+## A Note To the Reader
+
+This service was initially created as I was learning Kotlin. I started with Java, ran the converter in IDEA, and cleaned up the code. I was also trying out a new-to-me framework, Rapidoid. I have since then upgraded this service to Spring Boot, and started to add some tests. This is an incomplete codebase, and it was a toy project to further experiment with some concepts that I had been exploring at work.
+
 ## Generating a simplified US Border
 
 ``` bash
