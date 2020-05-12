@@ -22,8 +22,7 @@
         <junit.version>4.13</junit.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin.version>1.3.72</kotlin.version>
-        <rapidoid-quick.version>5.5.5</rapidoid-quick.version>
-        <rapidoid-render.version>5.5.5</rapidoid-render.version>
+        <swagger-request-validator-mockmvc.version>2.10.0</swagger-request-validator-mockmvc.version>
     </properties>
     <dependencies>
         <dependency>
@@ -46,6 +45,13 @@
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.2.7.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -56,6 +62,12 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.oai</groupId>
+            <artifactId>swagger-request-validator-mockmvc</artifactId>
+            <version>${swagger-request-validator-mockmvc.version}</version>
             <scope>test</scope>
         </dependency>
 

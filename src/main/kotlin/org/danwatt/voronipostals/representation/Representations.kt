@@ -28,7 +28,7 @@ data class PostalCode(
 
     companion object {
         fun loadLine(line: String): PostalCode {
-            val parts = line.split("\t").dropLastWhile(String::isEmpty)
+            val parts = line.split("\t").dropLastWhile(String::isEmpty).map { it.trim() }
             return PostalCode(
                 country = parts[0],
                 postal = parts[1],

@@ -7,11 +7,6 @@ import com.vividsolutions.jts.index.strtree.STRtree
 import com.vividsolutions.jts.io.WKTReader
 import com.vividsolutions.jts.geom.PrecisionModel
 import org.danwatt.voronipostals.representation.GeoContainer
-import java.net.URI
-import java.nio.file.FileSystems
-import java.nio.file.Path
-import java.nio.file.Paths
-
 
 object GeoUtils {
     @JvmStatic
@@ -27,23 +22,22 @@ object GeoUtils {
         "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"
     )
 
-    //TODO: This could accept a MAP
-    fun color(matches: List<Pair<Geometry, GeoContainer>>) {
+    fun color(matches: Map<Geometry, GeoContainer>) {
         val index = STRtree(matches.size)
-        matches.forEach { index.insert(it.first.envelopeInternal, it.first) }
+        matches.forEach { (g, _) -> index.insert(g.envelopeInternal, g) }
         val colors = LinkedHashMap<String, String>()
-        matches.forEach { p ->
+        matches.forEach { (g, gc) ->
             val potentialColors = ArrayList(MAP_COLORS)
-            val neighbors = getNeighbors(index, p.first)
+            val neighbors = getNeighbors(index, g)
             potentialColors.removeAll(neighbors.mapNotNull { colors[it.userData] })
-            colors[p.first.userData as String] = potentialColors[0]
-            p.second.color = potentialColors[0]
+            colors[g.userData as String] = potentialColors[0]
+            gc.color = potentialColors[0]
         }
     }
 
-    fun getNeighbors(index: SpatialIndex, geometry: Geometry): List<Geometry> {
-        val matches: List<Geometry> = index.query(geometry.envelopeInternal) as List<Geometry>
-        return matches.filter { it.intersects(geometry) && it !== geometry }
-    }
+    fun getNeighbors(index: SpatialIndex, geometry: Geometry): List<Geometry> =
+        (index.query(geometry.envelopeInternal) as List<Geometry>)
+            .filter { it !== geometry }
+            .filter { it.intersects(geometry) }
 
 }

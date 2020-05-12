@@ -1,0 +1,108 @@
+openapi: 3.0.1
+info:
+  title: Voroni Postal Demo
+  description: 'This is a demonstration application to show how we could utilize voroni cells as an easy way of showing
+  approximate territory outlines'
+  contact:
+    email: danwatt@gmail.com
+  version: 1.0.0
+externalDocs:
+  description: Blog post
+  url: https://danwatt.org/2016/06/postal-code-voroni-diagram/
+paths:
+  /nearby/counties/{point}:
+    get:
+      parameters:
+        - name: point
+          in: path
+          description: A latitude,longitude pair
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoContainer'
+  /nearby/postals/{point}:
+    get:
+      parameters:
+        - name: point
+          in: path
+          description: A latitude,longitude pair
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoContainer'
+  /postals/union/{postals}:
+    get:
+      parameters:
+        - name: postals
+          in: path
+          description: A latitude,longitude pair
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoContainer'
+
+components:
+  schemas:
+    GeoResults:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GeoContainer'
+    GeoContainer:
+      type: object
+      properties:
+        wkt:
+          type: string
+        color:
+          type: string
+    County:
+      allOf:
+        - $ref: '#/components/schemas/GeoContainer'
+        - type: object
+          properties:
+            state:
+              type: string
+            county:
+              type: string
+    PostalCode:
+      allOf:
+        - $ref: '#/components/schemas/GeoContainer'
+        - type: object
+          properties:
+            country:
+              type: string
+            postal:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            county:
+              type: string
+            latitude:
+              type: number
+            longitude:
+              type: number

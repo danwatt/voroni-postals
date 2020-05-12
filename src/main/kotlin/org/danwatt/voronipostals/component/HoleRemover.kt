@@ -8,11 +8,8 @@ import java.util.ArrayList
 object HoleRemover {
 
     @JvmStatic
-    fun cleanSmallHoles(geom: Geometry, areaTolerance: Double): Geometry {
-        return GeometryMapper.map(geom,
-            HoleRemoverMapOp(areaTolerance)
-        )
-    }
+    fun cleanSmallHoles(geom: Geometry, areaTolerance: Double): Geometry =
+        GeometryMapper.map(geom, HoleRemoverMapOp(areaTolerance))
 }
 
 class HoleRemoverMapOp(private val areaTolerance: Double) : GeometryMapper.MapOp {
@@ -30,10 +27,11 @@ class HoleRemoverMapOp(private val areaTolerance: Double) : GeometryMapper.MapOp
 
         return when (holesToKeep.size) {
             geom.numInteriorRing -> geom
-            else -> geom.factory.createPolygon(geom.exteriorRing as LinearRing,
-                GeometryFactory.toLinearRingArray(holesToKeep))
+            else -> geom.factory.createPolygon(
+                geom.exteriorRing as LinearRing,
+                GeometryFactory.toLinearRingArray(holesToKeep)
+            )
         }
-
     }
 
 }
