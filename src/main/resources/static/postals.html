@@ -32,7 +32,7 @@
         function loadVoroniCells(centerPoint,myMap,clickHandler) {
             $.get("/nearby/postals/" + centerPoint, function (data) {
                 var selectedLayer = null;
-                data.forEach(function (postalCode, index) {
+                data.results.forEach(function (postalCode, index) {
                     var item = addVoroniCell(myMap, postalCode.wkt, postalCode.postal, postalCode.color);
                     item.layer.on('click',clickHandler);
                     polygons.push(item.layer);
@@ -43,7 +43,7 @@
         function loadUnion(postals,myMap,clickHandler) {
             $.get("/postals/union/" + postals, function (data) {
                 var selectedLayer = null;
-                data.forEach(function (postalCode, index) {
+                data.results.forEach(function (postalCode, index) {
                     var item = addVoroniCell(myMap, postalCode.wkt, postalCode.postal, postalCode.color);
                     item.layer.on('click',clickHandler);
                     polygons.push(item.layer);

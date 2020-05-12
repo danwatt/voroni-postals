@@ -1,21 +1,26 @@
 package org.danwatt.voronipostals.representation
 
+data class GeoResults(var results: List<GeoContainer>)
+
 sealed class GeoContainer {
     var wkt: String? = null
     var color: String? = null
 }
+
 data class County(
-        val state: String,
-        val county: String
+    val state: String,
+    val county: String
 ) : GeoContainer()
 
-data class PostalCode(val country: String = "",
-                      val postal: String = "",
-                      val city: String = "",
-                      val state: String = "",
-                      val county: String = "",
-                      val latitude: Double = 0.toDouble(),
-                      val longitude: Double = 0.toDouble()) : Cloneable, GeoContainer() {
+data class PostalCode(
+    val country: String = "",
+    val postal: String = "",
+    val city: String = "",
+    val state: String = "",
+    val county: String = "",
+    val latitude: Double = 0.toDouble(),
+    val longitude: Double = 0.toDouble()
+) : Cloneable, GeoContainer() {
 
     override fun toString(): String = postal
     override fun equals(other: Any?): Boolean = postal == (other as PostalCode).postal
@@ -23,7 +28,7 @@ data class PostalCode(val country: String = "",
 
     companion object {
         fun loadLine(line: String): PostalCode {
-            val parts = line.split("\t".toRegex()).dropLastWhile(String::isEmpty)
+            val parts = line.split("\t").dropLastWhile(String::isEmpty).map { it.trim() }
             return PostalCode(
                 country = parts[0],
                 postal = parts[1],
