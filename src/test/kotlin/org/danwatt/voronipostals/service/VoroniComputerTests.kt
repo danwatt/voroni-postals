@@ -1,7 +1,12 @@
 package org.danwatt.voronipostals.service
 
+import com.vividsolutions.jts.geom.Coordinate
+import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.geom.GeometryFactory
+import com.vividsolutions.jts.geom.PrecisionModel
+import com.vividsolutions.jts.index.strtree.STRtree
 import com.vividsolutions.jts.io.WKTReader
+import org.assertj.core.api.Assertions.assertThat
 import org.danwatt.voronipostals.representation.PostalCode
 import org.junit.Test
 
@@ -9,6 +14,8 @@ class VoroniComputerTests {
 
     private val mauryCountyTnBoundingBox =
         WKTReader().read("POLYGON((-87.34 35.85,-86.60 35.85,-86.60 35.32,-87.34 35.32,-87.34 35.85))")
+
+    val geometryFactory = GeometryFactory(PrecisionModel(40.0))
 
     @Test
     fun test() {
@@ -22,11 +29,29 @@ class VoroniComputerTests {
             PostalCode(postal = "37174", latitude = 35.7173, longitude = -86.9048),
             PostalCode(postal = "38487", latitude = 35.6494, longitude = -87.2257)
         )
-        val strTree = VoroniComputer(GeometryFactory()).computeVoroni(mauryTn, mauryCountyTnBoundingBox)
-        strTree.itemsTree().forEach { println(it) }
 
-        val springHillPoint = 35.738654 to -86.946806
-        val columbiaSquare = 35.614833 to -87.033800
-        val tnCapitol = 36.165855 to -86.784501
+        val spatialIndex = VoroniComputer(geometryFactory)
+            .computeVoroni(mauryTn, mauryCountyTnBoundingBox)
+        (spatialIndex as STRtree).itemsTree().forEach { println(it) }
+
+        assertScenario(spatialIndex, 35.7 to -86.9, "37174")
+        assertScenario(spatialIndex, 35.6 to -87.0, "38401")
+        assertScenario(spatialIndex, 36.16 to -86.78, null)
+    }
+
+    private fun assertScenario(
+        spatialIndex: STRtree,
+        latLon: Pair<Double, Double>,
+        expectedPostal: String?
+    ) {
+        val (lat, lon) = latLon
+        val point = geometryFactory.createPoint(Coordinate(lon, lat))
+        val results = spatialIndex.query(point.envelopeInternal)
+        if (expectedPostal == null) {
+            assertThat(results).isEmpty()
+        } else {
+            assertThat(results).hasSizeGreaterThanOrEqualTo(1)
+            assertThat((results[0] as Geometry).userData).isEqualTo(expectedPostal)
+        }
     }
 }
