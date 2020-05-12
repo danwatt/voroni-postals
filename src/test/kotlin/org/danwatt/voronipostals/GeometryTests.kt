@@ -5,7 +5,6 @@ import org.assertj.core.api.Assertions.*
 import org.danwatt.voronipostals.representation.PostalCode
 import org.danwatt.voronipostals.service.PostalQueries
 import org.danwatt.voronipostals.repository.PostalSource
-import org.danwatt.voronipostals.service.UsBorderBuilder
 import org.junit.Test
 
 class GeometryTests {
