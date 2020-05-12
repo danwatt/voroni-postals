@@ -15,14 +15,14 @@ class VoroniComputer(val geometryFactory: GeometryFactory) {
         postalCodes: Collection<PostalCode>,
         boundingArea: Geometry? = null
     ): SpatialIndex {
-        val postalToCenter = postalCodes.map { it to Coordinate(it.longitude, it.latitude) }
-        var diagram = buildVoroniDiagram(postalToCenter, boundingArea) ?: return STRtree()
+        val postalToCenter = postalCodes.map { it to Coordinate(it.longitude, it.latitude) }.toMap()
+        val diagram = buildVoroniDiagram(postalToCenter, boundingArea) ?: return STRtree()
         val spatialIndex = buildInitialSpatialIndex(diagram)
         return placePointsIntoIndex(postalToCenter, spatialIndex)
     }
 
     private fun placePointsIntoIndex(
-        postalToCenter: List<Pair<PostalCode, Coordinate>>,
+        postalToCenter: Map<PostalCode, Coordinate>,
         spatialIndex: STRtree
     ): STRtree {
         val postalIndex = STRtree()
@@ -30,12 +30,12 @@ class VoroniComputer(val geometryFactory: GeometryFactory) {
             val point = geometryFactory.createPoint(coordinate)
             val query = spatialIndex.query(point.envelopeInternal) as List<Geometry>
             val match = query.firstOrNull { point.intersects(it) }
-            if (match != null) {
+            if (match == null) {
+                System.err.println("A match could not be found for $point. ${query.size} were found nearby")
+            } else {
                 postalCode.wkt = match.toText()
                 match.userData = postalCode.postal
                 postalIndex.insert(match.envelopeInternal, match)
-            } else {
-                System.err.println("Weird. A match could not be found for $point")
             }
         }
         return postalIndex
@@ -45,20 +45,28 @@ class VoroniComputer(val geometryFactory: GeometryFactory) {
         val spatialIndex = STRtree()
         (0 until gc.numGeometries)
             .map { gc.getGeometryN(it) }
+                /*
+                TODO: Utilize GeometrySnapper
+                 */
             .forEach { spatialIndex.insert(it.envelopeInternal, it) }
+        spatialIndex.build()
         return spatialIndex
     }
 
     private fun buildVoroniDiagram(
-        postalToCenter: List<Pair<PostalCode, Coordinate>>,
+        postalToCenter: Map<PostalCode, Coordinate>,
         boundingArea: Geometry?
     ): Geometry? {
         val diagramBuilder = VoronoiDiagramBuilder()
-        diagramBuilder.setSites(postalToCenter.map { it.second })
-        var diagram = diagramBuilder.getDiagram(geometryFactory)
-        if (boundingArea != null) {
-            diagram = diagram.intersection(boundingArea)
+
+        diagramBuilder.setSites(postalToCenter.values)
+        if (null != boundingArea) {
+            diagramBuilder.setClipEnvelope(boundingArea.envelopeInternal)
         }
+        val diagram = diagramBuilder.getDiagram(geometryFactory)
+       /* if (boundingArea != null) {
+            return diagram.intersection(boundingArea)
+        }*/
         return diagram
     }
 }
