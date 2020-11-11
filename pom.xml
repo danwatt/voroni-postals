@@ -15,7 +15,7 @@
     </parent>
 
     <properties>
-        <assertj-core.version>3.16.1</assertj-core.version>
+        <assertj-core.version>3.18.1</assertj-core.version>
         <commons-io.version>2.6</commons-io.version>
         <jool.version>0.9.14</jool.version>
         <jts-core.version>1.14.0</jts-core.version>
