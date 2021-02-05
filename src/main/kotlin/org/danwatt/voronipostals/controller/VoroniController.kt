@@ -1,9 +1,7 @@
 package org.danwatt.voronipostals.controller
 
-import org.danwatt.voronipostals.repository.PostalSource
 import org.danwatt.voronipostals.representation.GeoResults
 import org.danwatt.voronipostals.service.CountyService
-import org.danwatt.voronipostals.service.PostalQueries
 import org.danwatt.voronipostals.service.PostalService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
