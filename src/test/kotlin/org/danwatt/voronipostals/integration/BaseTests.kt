@@ -21,7 +21,5 @@ abstract class BaseTests {
     @Configuration
     @Profile("unit")
     @Import(App::class)
-    class IntegrationTestConfig {
-
-    }
+    class IntegrationTestConfig
 }
