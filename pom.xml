@@ -22,7 +22,7 @@
         <junit.version>4.13.1</junit.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin.version>1.4.30</kotlin.version>
-        <swagger-request-validator-mockmvc.version>2.12.1</swagger-request-validator-mockmvc.version>
+        <swagger-request-validator-mockmvc.version>2.15.1</swagger-request-validator-mockmvc.version>
         <mockk.version>1.10.5</mockk.version>
     </properties>
     <dependencies>
