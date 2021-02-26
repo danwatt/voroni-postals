@@ -21,7 +21,7 @@
         <jts-core.version>1.14.0</jts-core.version>
         <junit.version>4.13.1</junit.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <kotlin.version>1.4.30</kotlin.version>
+        <kotlin.version>1.4.31</kotlin.version>
         <swagger-request-validator-mockmvc.version>2.12.1</swagger-request-validator-mockmvc.version>
         <mockk.version>1.10.5</mockk.version>
     </properties>
