@@ -20,9 +20,11 @@ class IntegrationTests @Autowired constructor(
         mockMvc.get("/nearby/postals/{point}", honoluluLatLon) {
         }.andExpect {
             status { isOk() }
-            jsonPath("$.results") { isArray() }
-            jsonPath("$.results[0].postal") { value("96707") }
-            jsonPath("$.results[0].city") { value("Kapolei") }
+            content {
+                jsonPath("$.results") { isArray() }
+                jsonPath("$.results[0].postal") { value("96707") }
+                jsonPath("$.results[0].city") { value("Kapolei") }
+            }
         }
     }
 
@@ -31,9 +33,11 @@ class IntegrationTests @Autowired constructor(
         mockMvc.get("/nearby/counties/{point}", honoluluLatLon) {
         }.andExpect {
             status { isOk() }
-            jsonPath("$.results") { isArray() }
-            jsonPath("$.results[0].county") { value("Hawaii") }
-            jsonPath("$.results[0].state") { value("Hawaii") }
+            content {
+                jsonPath("$.results") { isArray() }
+                jsonPath("$.results[0].county") { value("Hawaii") }
+                jsonPath("$.results[0].state") { value("Hawaii") }
+            }
         }
     }
 
