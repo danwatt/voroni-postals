@@ -14,7 +14,7 @@ class CountyService(val postalSource: PostalSource) {
     fun collectNearbyCounties(lat: Double, lon: Double): List<GeoContainer> {
         val point = GeoUtils.geometryFactory.createPoint(Coordinate(lon, lat))
         val results = GeoUtils.getNeighbors(postalSource.countyIndex, point.buffer(2.0))
-        val matches = results.map { it to createCounty(it) }.toMap()
+        val matches = results.associateWith { createCounty(it) }
         GeoUtils.color(matches)
         return matches.values.toList()
     }

@@ -10,13 +10,13 @@ import org.danwatt.voronipostals.representation.PostalCode
 import org.danwatt.voronipostals.service.VoroniComputer
 import java.nio.charset.Charset
 
-class PostalSource {
+class PostalSource(path: String, boundingFile: String?) {
 
     val postalCodes: Map<String, PostalCode>
     val postalIndex: SpatialIndex
     val countyIndex: SpatialIndex
 
-    private constructor(path: String, boundingFile: String?) {
+    init {
         println("Loading postal codes")
         this.postalCodes = buildPostals(path)
         val usBoundary = loadBoundingFile(boundingFile)

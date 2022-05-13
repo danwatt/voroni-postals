@@ -16,7 +16,7 @@ class PostalService(val postalSource: PostalSource) {
         val results = GeoUtils.getNeighbors(postalSource.postalIndex, point.buffer(0.5))
         if (results.isEmpty()) return emptyList()
 
-        val matches = results.map { it to postalSource.postalCodes[it.userData]!! }.toMap()
+        val matches = results.associateWith { postalSource.postalCodes[it.userData]!! }
         GeoUtils.color(matches)
         return matches.values.toList()
     }

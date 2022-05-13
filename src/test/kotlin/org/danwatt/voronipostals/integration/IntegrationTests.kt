@@ -13,7 +13,7 @@ class IntegrationTests @Autowired constructor(
     private val mockMvc: MockMvc
 ) : BaseTests() {
 
-    val honoluluLatLon = "21.35,-157.91"
+    private val honoluluLatLon = "21.35,-157.91"
 
     @Test
     fun `get nearby postal codes`() {
@@ -66,8 +66,4 @@ class IntegrationTests @Autowired constructor(
 
 private fun ResultActionsDsl.andExpectBadRequest(): ResultActionsDsl = this.andExpect {
     status { isBadRequest() }
-}
-
-private fun ResultActionsDsl.andExpectNotFound(): ResultActionsDsl = this.andExpect {
-    status { isNotFound() }
 }

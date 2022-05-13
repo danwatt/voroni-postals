@@ -15,7 +15,7 @@ class VoroniComputer(val geometryFactory: GeometryFactory) {
         postalCodes: Collection<PostalCode>,
         boundingArea: Geometry? = null
     ): SpatialIndex {
-        val postalToCenter = postalCodes.map { it to Coordinate(it.longitude, it.latitude) }.toMap()
+        val postalToCenter = postalCodes.associateWith { Coordinate(it.longitude, it.latitude) }
         val diagram = buildVoroniDiagram(postalToCenter, boundingArea) ?: return STRtree()
         val spatialIndex = buildInitialSpatialIndex(diagram)
         return placePointsIntoIndex(postalToCenter, spatialIndex)
@@ -63,10 +63,9 @@ class VoroniComputer(val geometryFactory: GeometryFactory) {
         if (null != boundingArea) {
             diagramBuilder.setClipEnvelope(boundingArea.envelopeInternal)
         }
-        val diagram = diagramBuilder.getDiagram(geometryFactory)
-       /* if (boundingArea != null) {
+        /* if (boundingArea != null) {
             return diagram.intersection(boundingArea)
         }*/
-        return diagram
+        return diagramBuilder.getDiagram(geometryFactory)
     }
 }
