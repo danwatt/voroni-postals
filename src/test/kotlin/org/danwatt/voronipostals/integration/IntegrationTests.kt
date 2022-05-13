@@ -9,10 +9,9 @@ import org.springframework.test.web.servlet.ResultActionsDsl
 import org.springframework.test.web.servlet.get
 
 @AutoConfigureMockMvc(print = MockMvcPrint.SYSTEM_OUT, printOnlyOnFailure = false)
-class IntegrationTests : BaseTests() {
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
+class IntegrationTests @Autowired constructor(
+    private val mockMvc: MockMvc
+) : BaseTests() {
 
     val honoluluLatLon = "21.35,-157.91"
 
@@ -20,8 +19,8 @@ class IntegrationTests : BaseTests() {
     fun `get nearby postal codes`() {
         mockMvc.get("/nearby/postals/{point}", honoluluLatLon) {
         }.andExpect {
-            status { isOk }
-            jsonPath("$.results") { isArray }
+            status { isOk() }
+            jsonPath("$.results") { isArray() }
             jsonPath("$.results[0].postal") { value("96707") }
             jsonPath("$.results[0].city") { value("Kapolei") }
         }
@@ -31,8 +30,8 @@ class IntegrationTests : BaseTests() {
     fun `get nearby counties`() {
         mockMvc.get("/nearby/counties/{point}", honoluluLatLon) {
         }.andExpect {
-            status { isOk }
-            jsonPath("$.results") { isArray }
+            status { isOk() }
+            jsonPath("$.results") { isArray() }
             jsonPath("$.results[0].county") { value("Hawaii") }
             jsonPath("$.results[0].state") { value("Hawaii") }
         }
@@ -62,9 +61,9 @@ class IntegrationTests : BaseTests() {
 }
 
 private fun ResultActionsDsl.andExpectBadRequest(): ResultActionsDsl = this.andExpect {
-    status { isBadRequest }
+    status { isBadRequest() }
 }
 
 private fun ResultActionsDsl.andExpectNotFound(): ResultActionsDsl = this.andExpect {
-    status { isNotFound }
+    status { isNotFound() }
 }
