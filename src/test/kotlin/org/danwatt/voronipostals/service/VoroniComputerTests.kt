@@ -15,7 +15,7 @@ class VoroniComputerTests {
     private val mauryCountyTnBoundingBox =
         WKTReader().read("POLYGON((-87.34 35.85,-86.60 35.85,-86.60 35.32,-87.34 35.32,-87.34 35.85))")
 
-    val geometryFactory = GeometryFactory(PrecisionModel(40.0))
+    private val geometryFactory = GeometryFactory(PrecisionModel(40.0))
 
     @Test
     fun test() {
