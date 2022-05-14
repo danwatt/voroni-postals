@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"/>
     <style>
            #mapid {
             width: auto;
@@ -13,7 +13,7 @@
         }
 
     </style>
-    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
     <script src="http://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js"></script>
     <script src="/leaflet-providers.js"></script>
     <script   src="http://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
@@ -21,17 +21,17 @@
         var polygons = [];
 
         function addVoroniCell(map, voroniPolygonWkt, postalCode, color) {
-            var selectedLayer = omnivore.wkt.parse(voroniPolygonWkt);
+            const selectedLayer = omnivore.wkt.parse(voroniPolygonWkt);
             selectedLayer.clickable = true;
             selectedLayer.addTo(map);
             selectedLayer.setStyle({weight: 1, fillColor: color, color: color, fillOpacity: 0.5});
-            var label = null;
+            const label = null;
             return {layer: selectedLayer, label: label};
         }
 
         function loadVoroniCells(centerPoint,myMap,clickHandler) {
             $.get("/nearby/postals/" + centerPoint, function (data) {
-                var selectedLayer = null;
+                const selectedLayer = null;
                 data.results.forEach(function (postalCode, index) {
                     var item = addVoroniCell(myMap, postalCode.wkt, postalCode.postal, postalCode.color);
                     item.layer.on('click',clickHandler);
@@ -42,7 +42,7 @@
 
         function loadUnion(postals,myMap,clickHandler) {
             $.get("/postals/union/" + postals, function (data) {
-                var selectedLayer = null;
+                const selectedLayer = null;
                 data.results.forEach(function (postalCode, index) {
                     var item = addVoroniCell(myMap, postalCode.wkt, postalCode.postal, postalCode.color);
                     item.layer.on('click',clickHandler);
@@ -52,7 +52,7 @@
         }
 
         function init() {
-            var myMap = L.map('mapid', {
+            const myMap = L.map('mapid', {
                 zoomControl: true,
                 attributionControl: true,
                 layers: [
@@ -60,12 +60,12 @@
                 ]
             });
 
-            var clickHandler = function (e) {
+            const clickHandler = function (e) {
                 polygons.forEach(function (poly) {
                     myMap.removeLayer(poly);
                 });
                 polygons.length = 0;
-                loadVoroniCells(e.latlng.lat + ',' + e.latlng.lng,myMap, this);
+                loadVoroniCells(e.latlng.lat + ',' + e.latlng.lng, myMap, this);
             };
 
             myMap.setView([39.828175, -98.5795], 5);
