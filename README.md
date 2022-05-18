@@ -2,12 +2,17 @@
 
 [![Build Status](https://travis-ci.org/danwatt/voroni-postals.svg?branch=master)](https://travis-ci.org/danwatt/voroni-postals)
 
+[![CircleCI](https://circleci.com/gh/danwatt/voroni-postals/tree/master.svg?style=svg)](https://circleci.com/gh/danwatt/voroni-postals/tree/master)
+[![CircleCI](https://dl.circleci.com/insights-snapshot/gh/danwatt/voroni-postals/master/maven_test/badge.svg?window=30d)](https://app.circleci.com/insights/github/danwatt/voroni-postals/workflows/maven_test/overview?branch=master&reporting-window=last-30-days&insights-snapshot=true)
+
 * [Blog post description](https://www.danwatt.org/2016/06/postal-code-voroni-diagram/)
 * [Heroku](http://voroni-postals.herokuapp.com/postals.html) - This app is deployed to a free Heroku instance, so it may shut down due to inactivity. 
 
 ## A Note To the Reader
 
-This service was initially created as I was learning Kotlin. I started with Java, ran the converter in IDEA, and cleaned up the code. I was also trying out a new-to-me framework, Rapidoid. I have since then upgraded this service to Spring Boot, and started to add some tests. This is an incomplete codebase, and it was a toy project to further experiment with some concepts that I had been exploring at work.
+This service was initially created as I was learning Kotlin. I started with Java, ran the converter in IDEA, and cleaned up the code.
+I was also trying out a new-to-me framework, Rapidoid. I have since then upgraded this service to Spring Boot, and started to add some tests.
+This is an incomplete codebase, and it was a toy project to further experiment with some concepts that I had been exploring at work.
 
 ## Generating a simplified US Border
 
